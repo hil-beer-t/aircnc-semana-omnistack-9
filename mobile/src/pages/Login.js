@@ -1,18 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { KeyboardAvoidingView, AsyncStorage, Platform, View, Image, TouchableOpacity, Text, TextInput, StyleSheet } from 'react-native';
+import { View, AsyncStorage, KeyboardAvoidingView, Platform, Image, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
-//
 import api from '../services/api';
-//
+
 import logo from '../assets/logo.png';
 
-// import { Container } from './styles';
-
-const Login = ({ navigation }) => {
+export default function Login({ navigation }) {
   const [email, setEmail] = useState('');
   const [techs, setTechs] = useState('');
-
-  // AsyncStorage.clear();
 
   useEffect(() => {
     AsyncStorage.getItem('user').then(user => {
@@ -29,8 +24,6 @@ const Login = ({ navigation }) => {
 
     const { _id } = response.data;
 
-    console.log(_id);
-
     await AsyncStorage.setItem('user', _id);
     await AsyncStorage.setItem('techs', techs);
 
@@ -38,14 +31,13 @@ const Login = ({ navigation }) => {
   }
 
   return (
-    <KeyboardAvoidingView style={styles.container}
-      enabled={Platform.OS}
-      behavior="padding">
+    <KeyboardAvoidingView enabled={Platform.OS === 'ios'} behavior="padding" style={styles.container}>
       <Image source={logo} />
 
       <View style={styles.form}>
-        <Text style={styles.label}>SEU EMAIL *</Text>
-        <TextInput style={styles.input}
+        <Text style={styles.label}>SEU E-MAIL *</Text>
+        <TextInput
+          style={styles.input}
           placeholder="Seu e-mail"
           placeholderTextColor="#999"
           keyboardType="email-address"
@@ -55,8 +47,9 @@ const Login = ({ navigation }) => {
           onChangeText={setEmail}
         />
 
-        <Text style={styles.label}>TECNOLOGIAS</Text>
-        <TextInput style={styles.input}
+        <Text style={styles.label}>TECNOLOGIAS *</Text>
+        <TextInput
+          style={styles.input}
           placeholder="Tecnologias de interesse"
           placeholderTextColor="#999"
           autoCapitalize="words"
@@ -65,7 +58,7 @@ const Login = ({ navigation }) => {
           onChangeText={setTechs}
         />
 
-        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+        <TouchableOpacity onPress={handleSubmit} style={styles.button}>
           <Text style={styles.buttonText}>Encontrar spots</Text>
         </TouchableOpacity>
       </View>
@@ -95,12 +88,12 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderColor: '#ddd',
-    borderRadius: 2,
     paddingHorizontal: 20,
     fontSize: 16,
     color: '#444',
     height: 44,
     marginBottom: 20,
+    borderRadius: 2
   },
 
   button: {
@@ -108,14 +101,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#f05a5b',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 2
+    borderRadius: 2,
   },
 
   buttonText: {
-    color: '#fff',
+    color: '#FFF',
     fontWeight: 'bold',
-    fontSize: 16
-  }
-})
-
-export default Login;
+    fontSize: 16,
+  },
+});

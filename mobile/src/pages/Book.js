@@ -1,20 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { Text, Alert, SafeAreaView, StyleSheet, TouchableOpacity, TextInput, AsyncStorage } from 'react-native';
+import React, { useState } from 'react';
+import { SafeAreaView, Alert, StyleSheet, TextInput, TouchableOpacity, AsyncStorage, Text } from 'react-native';
 
-//
 import api from '../services/api';
 
-// import { Container } from './styles';
-
-const Book = ({ navigation }) => {
+export default function Book({ navigation }) {
   const [date, setDate] = useState('');
-  const id = navigation.getParam('id')
+  const id = navigation.getParam('id');
 
   async function handleSubmit() {
-
     const user_id = await AsyncStorage.getItem('user');
-
-    console.log(user_id);
 
     await api.post(`/spots/${id}/bookings`, {
       date
@@ -22,9 +16,9 @@ const Book = ({ navigation }) => {
       headers: { user_id }
     })
 
-    Alert.alert('Solicitação enviada.')
+    Alert.alert('Solicitação de reserva enviada.');
 
-    navigation.navigate('List')
+    navigation.navigate('List');
   }
 
   function handleCancel() {
@@ -33,8 +27,9 @@ const Book = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.label}>DATA DE INTERESSE</Text>
-      <TextInput style={styles.input}
+      <Text style={styles.label}>DATA DE INTERESSE *</Text>
+      <TextInput
+        style={styles.input}
         placeholder="Qual data você quer reservar?"
         placeholderTextColor="#999"
         autoCapitalize="words"
@@ -43,15 +38,15 @@ const Book = ({ navigation }) => {
         onChangeText={setDate}
       />
 
-      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+      <TouchableOpacity onPress={handleSubmit} style={styles.button}>
         <Text style={styles.buttonText}>Solicitar reserva</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={handleCancel} style={[styles.button, styles.cancelButton]} >
-        <Text style={styles.buttonText}>Cancelar </Text>
+      <TouchableOpacity onPress={handleCancel} style={[styles.button, styles.cancelButton]}>
+        <Text style={styles.buttonText}>Cancelar</Text>
       </TouchableOpacity>
     </SafeAreaView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -60,21 +55,21 @@ const styles = StyleSheet.create({
   },
 
   label: {
-    marginTop: 30,
     fontWeight: 'bold',
     color: '#444',
     marginBottom: 8,
+    marginTop: 30,
   },
 
   input: {
     borderWidth: 1,
     borderColor: '#ddd',
-    borderRadius: 2,
     paddingHorizontal: 20,
     fontSize: 16,
     color: '#444',
     height: 44,
     marginBottom: 20,
+    borderRadius: 2
   },
 
   button: {
@@ -82,19 +77,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#f05a5b',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 2
+    borderRadius: 2,
   },
 
   cancelButton: {
-    backgroundColor: '#CCC',
-    marginTop: 10,
+    backgroundColor: '#ccc',
+    marginTop: 10
   },
 
   buttonText: {
-    color: '#fff',
+    color: '#FFF',
     fontWeight: 'bold',
-    fontSize: 16
-  }
-})
-
-export default Book;
+    fontSize: 16,
+  },
+});
